@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'accounts',
     'pages',
 
-
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -140,12 +139,14 @@ USE_TZ = True
 #Static Files
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
-STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles')) # new
-STATICFILES_FINDERS = [ # new
+STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
+STATICFILES_FINDERS = [ 
 "django.contrib.staticfiles.finders.FileSystemFinder",
 "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

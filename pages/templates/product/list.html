@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<h1>Ongoing Auction</h1>
+<div class="product-list">
+    {% for product in products %}
+
+    <div class="item">
+
+        <a href="{{ product.get_absolute_url }}">
+            <img src="{% if product.image %}{{ product.image.url }}{%else %}{% static "img/no_image.png" %}{% endif %}">
+        </a>
+        <a href="{{ product.get_absolute_url }}">{{ product.title }}</ a>
+            ${{ product.minimum_bid_price }}
+
+    </div>
+
+    {% endfor %}
+    {% else %}
+    <p>Please Log in</p>
+    <p><a href="{% url 'account_login' %}">Log In</a>
+        {% endif %}
+</div>
+{% endblock content %}
