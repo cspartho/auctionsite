@@ -1,19 +1,18 @@
-{% extends "shop/base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ product.name }}{% endblock %}
+{% block title %}{{ product.title }}{% endblock %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="product-detail">
-    <img src="{% if product.image %}{{ product.image.url }}{% else %}
-{% static "img/no_image.png" %}{% endif %}">
-    <h1>{{ product.name }}</h1>
-    <h2>
-        <a href="{{ product.category.get_absolute_url }}">
-            {{ product.category }}
-        </a>
-    </h2>
-    <p class="price">${{ product.price }}</p>
+    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+    <h1>{{ product.title }}</h1>
+    <p class="price">Minumum Bid: ${{ product.minimum_bid_price }}</p>
     {{ product.description|linebreaks }}
 </div>
+{% else %}
+    <p>You are not logged In.Please Log in</p>
+    <p><a href="{% url 'account_login' %}">Log In</a>
+{% endif %}
 {% endblock %}

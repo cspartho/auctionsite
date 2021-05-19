@@ -14,8 +14,9 @@ class Products(models.Model):
         ordering =('date_posted',)
         index_together = (('id','slug'),)
     def __str__(self):
-        return "ID:" + str(self.pk) + " " + self.title
-    
+        return self.title
+    def get_absolute_url(self):
+        return reverse('pages:product_detail',args=[self.id, self.slug])
 
 
 class Auction(models.Model):
@@ -25,4 +26,4 @@ class Auction(models.Model):
 	time_ending = models.DateTimeField()
 	
 	def __str__(self):
-		return "ID:" + str(self.pk) + " PRODUCT_ID:" + str(self.product_id)
+		return self.product_id

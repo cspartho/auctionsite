@@ -14,9 +14,10 @@
         <a href="{{ product.get_absolute_url }}">
             <img src="{% if product.image %}{{ product.image.url }}{%else %}{% static "img/no_image.png" %}{% endif %}">
         </a>
-        <a href="{{ product.get_absolute_url }}">{{ product.title }}</ a>
+        <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+        <br>
             ${{ product.minimum_bid_price }}
-
+            
     </div>
 
     {% endfor %}
