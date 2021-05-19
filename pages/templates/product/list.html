@@ -2,28 +2,70 @@
 {% load static %}
 
 {% block title %}Home{% endblock title %}
+
 {% block content %}
 
 {% if user.is_authenticated %}
-<h1>Ongoing Auction</h1>
-<div class="product-list">
-    {% for product in products %}
+    <h1>Ongoing Auction</h1>
+    <a class="btn btn-primary float-right" href="{% url "pages:product_add" %}" role="button">+Add Items</a>
+    <br>
+    <br>
+    <table class="table mb-0">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Title</th>
+                <th>Minimum Bid</th>
+                <th>EndTime</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>
+                    <a href="{{ product.get_absolute_url }}">
+                        <img src="{% if product.image %}{{ product.image.url }}{%else %}{% static "img/no_image.png" %}{% endif %}"
+                            style="width:80px;">
+                    </a>
+                </td>
+                <td><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></td>
+                <td>
+                    ${{ product.minimum_bid_price }}
+                </td>
+                <td>
+                    {{ product.end_time }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    <div class="item">
-
-        <a href="{{ product.get_absolute_url }}">
-            <img src="{% if product.image %}{{ product.image.url }}{%else %}{% static "img/no_image.png" %}{% endif %}">
-        </a>
-        <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
-        <br>
-            ${{ product.minimum_bid_price }}
-            
-    </div>
-
-    {% endfor %}
+<!-- Add pagination View -->
+{% if is_paginated %}
+<ul class="pagination">
+  {% if page_obj.has_previous %}
+    <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+  {% else %}
+    <li class="page-item disabled"><span>&laquo;</span></li>
+  {% endif %}
+  {% for i in paginator.page_range %}
+    {% if page_obj.number == i %}
+      <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
     {% else %}
-    <p>Please Log in</p>
-    <p><a href="{% url 'account_login' %}">Log In</a>
-        {% endif %}
-</div>
+      <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+  {% endfor %}
+  {% if page_obj.has_next %}
+    <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+  {% else %}
+    <li class="disabled"><span>&raquo;</span></li>
+  {% endif %}
+</ul>
+{% endif %}
+    
+{% else %}
+    <h1>Your are not logged in. Please Log in</h1>
+
+{% endif %}
+
 {% endblock content %}

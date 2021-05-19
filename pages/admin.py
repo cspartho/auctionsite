@@ -3,7 +3,7 @@ from .models import Products,Auction
 # Register your models here.
 
 class ProductsAdmin(admin.ModelAdmin):
-    list_display=["title","minimum_bid_price","slug","date_posted",]
+    list_display=["title","minimum_bid_price","date_posted","end_time"]
     prepopulated_fields = {'slug': ('title',)}
 
 admin.site.register(Products,ProductsAdmin)
