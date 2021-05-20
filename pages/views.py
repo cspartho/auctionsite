@@ -30,16 +30,27 @@ class ProductCreateView(LoginRequiredMixin,CreateView):
     fields =['title','image','description','minimum_bid_price','end_time']
     #success_url = reverse_lazy('product/list.html')
 
+    #To add author of the posted itmes
     def form_valid(self,form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
 class ProductUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Products
-    fields = ['title','image','description','minimum_bid_price']
+    fields = ['title','image','description','minimum_bid_price','created_by']
     template_name ='product/product_update.html'
-
+    
+    #specific user can only update 
     def test_func(self):
         obj = self.get_object()
         return obj.created_by == self.request.user
 
+
+class UserProductListView(ListView):
+    model = Products
+    template_name ='user/user_post.html'
+    context_object_name = 'products'
+    paginate_by =5
+    def get_queryset(self):
+        queryset = Products.objects.filter(created_by=self.request.user)
+        return queryset
