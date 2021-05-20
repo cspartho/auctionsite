@@ -1,11 +1,12 @@
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+
 #For Slugify
 from django.utils.text import slugify
 import string
 import random
-
 #To generate differnt slug
 def rand_slug():
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
@@ -18,6 +19,7 @@ class Products(models.Model):
     minimum_bid_price = models.DecimalField(max_digits=10,decimal_places=2)
     date_posted = models.DateTimeField(auto_now_add=True, blank=True)
     end_time = models.DateTimeField(default=timezone.now)
+    created_by = models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
 
     class Meta:
         ordering =('date_posted',)
