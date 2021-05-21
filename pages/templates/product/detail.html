@@ -8,13 +8,44 @@
 <div class="product-detail">
     <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
     <h1>{{ product.title }}</h1>
-    <p class="price">Minumum Bid: ${{ product.minimum_bid_price }}</p>
-    {{ product.description|linebreaks }}
-</div>
     {% if product.created_by == request.user %}
-    <div class="card-footer text-center text-muted">
     | <a href="{% url "pages:product_edit" product.pk product.slug %}">Edit</a> |
+    {% endif %}
+    <p>add by:{{ product.created_by }}</p>
+    <p class="price">Minimum Bid: ${{ product.minimum_bid_price }}</p>
+    <p style="font-weight: bold;">Product Description:</p>{{ product.description|linebreaks }}
+</div>
+<div>
+    
+    {% if product.bid_item.count %}
+    <h1 class="text-white bg-dark"> Current Bid Winner: {{ product.bid_item.all |first}}</h1>
+    {% endif %}   
+<div>
+    
     </div>
+    {% if product.bid_item.count %}
+    <table class="table mb-0">
+        <thead>
+            <tr>
+              <th>Bidder</th>
+              <th>Bid Price</th>
+            </tr>
+          </thead>
+    <tbody>
+        {% for bid in product.bid_item.all %}
+        <tr>
+            <td>
+                {{ bid.created_by }}
+            </td>
+            <td>
+                {{ bid.bid_price }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    {% else %}
+    <h1 class="text-danger"> No one Bid this time yet!!!!</h1>
     {% endif %}
 {% else %}
     <p>You are not logged In.Please Log in</p>

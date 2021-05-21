@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404
 from django.views.generic import TemplateView,ListView,DetailView
 from django.views.generic.edit import CreateView,UpdateView
 from django.contrib.auth.models import User
-from .models import Products,Auction
+from .models import Products,Bid
 from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import (
@@ -37,7 +37,7 @@ class ProductCreateView(LoginRequiredMixin,CreateView):
 
 class ProductUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Products
-    fields = ['title','image','description','minimum_bid_price','created_by']
+    fields = ['title','image','description','minimum_bid_price',]
     template_name ='product/product_update.html'
     
     #specific user can only update 
@@ -54,3 +54,13 @@ class UserProductListView(ListView):
     def get_queryset(self):
         queryset = Products.objects.filter(created_by=self.request.user)
         return queryset
+
+class BidCreateView(CreateView):
+    model = Bid
+    template_name = 'bid/bid_add.html'
+    fields=['bid_price']
+    context_object_name = 'bidder'
+
+    def form_valid(self,form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)

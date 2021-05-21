@@ -19,6 +19,7 @@
       <th>Title</th>
       <th>Minimum Bid</th>
       <th>EndTime</th>
+      <th>Add By</th>
     </tr>
   </thead>
   <tbody>
@@ -37,6 +38,7 @@
       <td>
         {{ product.end_time }}
       </td>
+      <td>{{ product.created_by }}</td>
     </tr>
     
     {% endfor %}
