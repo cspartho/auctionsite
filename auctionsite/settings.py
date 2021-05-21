@@ -25,7 +25,7 @@ SECRET_KEY = 'o$a-s6dikp#3f_oi46hhbiu^w5yhw93#+(a*x-&yuwbjv1itab'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://auction-site-live.herokuapp.com','localhost']
+ALLOWED_HOSTS = ['*']
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
