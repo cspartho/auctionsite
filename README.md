@@ -17,7 +17,7 @@ I faced a problem to create item description page.The problem was to create a un
 
 ## Step 3:Auction Page
 
-Here user can place bid items which are uploaded by others.After placing bid user can show his name in bid list and he can also edit his bid.
+Here user can place bid items which are uploaded by others. After placing bid,bidder will be shown in bid list and also current bid winner also be found. Bidder can also edit his bid. 
 
 ### Limitations:
 - Bid can only be placed from admin panels.
