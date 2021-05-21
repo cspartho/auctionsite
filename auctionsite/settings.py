@@ -27,6 +27,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['https://auction-site-live.herokuapp.com','localhost']
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Application definition
 
