@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load crispy_forms_tags %}
 {% block title %}{{ product.title }}{% endblock %}
 
 {% block content %}
@@ -9,19 +9,37 @@
     <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
     <h1>{{ product.title }}</h1>
     {% if product.created_by == request.user %}
-    | <a href="{% url "pages:product_edit" product.pk product.slug %}">Edit</a> |
+    <a href="{% url "pages:product_edit" product.pk product.slug %}" class="btn btn-warning">Edit</a>
     {% endif %}
     <p>add by:{{ product.created_by }}</p>
     <p class="price">Minimum Bid: ${{ product.minimum_bid_price }}</p>
     <p style="font-weight: bold;">Product Description:</p>{{ product.description|linebreaks }}
 </div>
+<br>
+{% now "Y-m-d H:i" as today_date_time %}
+
+{% if today_date_time < product.end_time|date:"Y-m-d H:i" %}
+{% if product.created_by != request.user %}
 <div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_table }}
+        <button class="btn btn-success" type="submit">BID</button>
+      </form>
+</div>
+{% endif %}
+{% else %}
+<div class="card-header" style="color: red; font-weight: bold">
+    Bidding Time is Over !!
+</div>
+{% endif %}
     
+<div>
+    {% if today_date_time > product.end_time|date:"Y-m-d H:i" %}
     {% if product.bid_item.count %}
-    <h1 class="text-white bg-dark"> Current Bid Winner: {{ product.bid_item.all |first}}</h1>
+    <div class="card-header" style="color: green; font-weight: bold">Current Bid Winner: {{ product.bid_item.all |first}}</div>
     {% endif %}   
-<div>
-    
+    {% endif %}
     </div>
     {% if product.bid_item.count %}
     <table class="table mb-0">
@@ -47,6 +65,9 @@
     {% else %}
     <h1 class="text-danger"> No one Bid this time yet!!!!</h1>
     {% endif %}
+
+
+
 {% else %}
     <p>You are not logged In.Please Log in</p>
     <p><a href="{% url 'account_login' %}">Log In</a>
