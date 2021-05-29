@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.models import User
 # For Slugify
 from django.utils.text import slugify
 import string
@@ -44,10 +44,14 @@ class Bid(models.Model):
     bid_item =models.ForeignKey(Products,on_delete=models.CASCADE,related_name='bid_item')
     bid_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
-        ordering =('-bid_price',)
+        ordering =('date_posted',)
 
     def __str__(self):
         return str(self.created_by)
+    
+    def get_absolute_url(self):
+        return reverse('pages:product_detail', args=[self.bid_item.id, self.bid_item.slug])
    
